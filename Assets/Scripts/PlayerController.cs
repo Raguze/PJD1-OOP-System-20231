@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : BaseController
 {
 
     [SerializeField]
@@ -26,11 +26,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private Rigidbody2D rb;
-    [SerializeField]
-    private Transform tf;
-
+    protected List<Weapon> Weapons = new List<Weapon>();
 
     public float Horizontal;
     public float Vertical;
@@ -48,10 +44,20 @@ public class PlayerController : MonoBehaviour
         } 
     }
 
-    private void Awake()
+    public Weapon CurrentWeapon
     {
-        rb = GetComponent<Rigidbody2D>();
-        tf = GetComponent<Transform>();
+        get
+        {
+            return Weapons[0];
+        }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Weapon[] weapons = GetComponentsInChildren<Weapon>();
+        Weapons.AddRange(weapons);
     }
 
     private void Update()
@@ -73,6 +79,9 @@ public class PlayerController : MonoBehaviour
 
         rb.velocity = Velocity;
 
-        
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            CurrentWeapon.Fire();
+        }
     }
 }

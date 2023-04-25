@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponDTO", menuName = "DTO/WeaponDTO")]
+[System.Serializable]
 public class WeaponDTO : ItemDTO
 {
+    public WeaponType Type;
     public int Damage;
     public int AmmoMax;
     public float FireRate;
@@ -13,4 +15,5 @@ public class WeaponDTO : ItemDTO
     public float Distance;
     public float BulletSpeed;
     public float Weight;
+    
 }
