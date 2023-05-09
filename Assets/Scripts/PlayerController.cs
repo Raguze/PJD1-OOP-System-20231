@@ -44,11 +44,13 @@ public class PlayerController : BaseController
         } 
     }
 
+    [SerializeField]
+    protected int currentWeaponIndex;
     public Weapon CurrentWeapon
     {
         get
         {
-            return Weapons[0];
+            return Weapons[currentWeaponIndex];
         }
     }
 
@@ -58,22 +60,45 @@ public class PlayerController : BaseController
 
         Weapon[] weapons = GetComponentsInChildren<Weapon>();
         Weapons.AddRange(weapons);
+
+        foreach (var weapon in weapons)
+        {
+            weapon.gameObject.SetActive(false);
+        }
+
+        ChangeWeapon(0);
     }
+
+    public void ChangeWeapon(int index)
+    {
+        CurrentWeapon.gameObject.SetActive(false);
+        currentWeaponIndex = index;
+        CurrentWeapon.gameObject.SetActive(true);
+    }
+
+    public Vector3 MousePosition;
 
     private void Update()
     {
-        Horizontal = leftJoystick.Horizontal;
-        Vertical = leftJoystick.Vertical;
+        //Horizontal = leftJoystick.Horizontal;
+        //Vertical = leftJoystick.Vertical;
+
+        Horizontal = Input.GetAxis("Horizontal");
+        Vertical = Input.GetAxis("Vertical");
 
         Velocity = new Vector2(Horizontal, Vertical) * Speed;
 
-        Direction = rightJoystick.Direction;
+        //Direction = rightJoystick.Direction;
 
-        if(Direction.magnitude > 0.1f)
-        {
-            Rotation = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 90f;
-        }
+        //if(Direction.magnitude > 0.1f)
+        //{
+        //    Rotation = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 90f;
+        //}
 
+        MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        float deltaX = MousePosition.x - tf.position.x;
+        float deltaY = MousePosition.y - tf.position.y;
+        Rotation = Mathf.Atan2(deltaY, deltaX) * Mathf.Rad2Deg -90f;
 
         tf.rotation = Quaternion.Euler(0, 0, Rotation);
 
@@ -82,6 +107,21 @@ public class PlayerController : BaseController
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             CurrentWeapon.Fire();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            CurrentWeapon.Reload();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChangeWeapon(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ChangeWeapon(1);
         }
     }
 }

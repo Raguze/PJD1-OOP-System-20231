@@ -15,6 +15,9 @@ public class Weapon : Item
     public float BulletSpeed { get; set; }
     public float Weight { get; set; }
 
+    public int Ammo { get; protected set; }
+    public float ReloadDuration { get; protected set; }
+
     [SerializeField]
     public virtual WeaponType Type { get; set; }
 
@@ -26,7 +29,18 @@ public class Weapon : Item
 
     protected Transform tf;
 
-    public void SetDTO(WeaponDTO dto)
+    public bool CanFire
+    { 
+        get
+        {
+            return (
+                Ammo > 0
+                && ReloadDuration <= 0
+            );
+        } 
+    }
+
+    public virtual void SetDTO(WeaponDTO dto)
     {
         weaponDTO = dto;
 
@@ -40,6 +54,9 @@ public class Weapon : Item
         ReloadSpeed = weaponDTO.ReloadSpeed;
         Weight = weaponDTO.Weight;
         Type = weaponDTO.Type;
+
+        // Other params
+        Ammo = AmmoMax;
     }
 
     private void Awake()
@@ -57,10 +74,37 @@ public class Weapon : Item
 
     }
 
-    public void Fire()
+    private void Update()
+    {
+        if(ReloadDuration > 0)
+        {
+            ReloadDuration -= Time.deltaTime;
+            if(ReloadDuration <= 0)
+            {
+                Ammo = AmmoMax;
+            }
+        }
+    }
+
+    public virtual void Fire()
+    {
+        if(CanFire)
+        {
+            FireWeapon();
+            Ammo--;
+        }
+    }
+
+    protected virtual void FireWeapon()
     {
         BulletController bullet = Factory.CreateBullet();
-        bullet.SetTransform(BulletRespawn.position,tf.rotation.eulerAngles.z);
+        bullet.SetTransform(BulletRespawn.position, tf.rotation.eulerAngles.z);
         bullet.SetDTO(weaponDTO);
+
+    }
+
+    public virtual void Reload()
+    {
+        ReloadDuration = ReloadSpeed;
     }
 }
