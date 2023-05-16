@@ -104,24 +104,32 @@ public class PlayerController : BaseController
 
         rb.velocity = Velocity;
 
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if(InputController.FireHold)
         {
             CurrentWeapon.Fire();
         }
 
-        if(Input.GetKeyDown(KeyCode.Mouse1))
+        if(InputController.ReloadButton)
         {
             CurrentWeapon.Reload();
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if(InputController.SelectWeapon1Button)
         {
             ChangeWeapon(0);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (InputController.SelectWeapon2Button)
         {
             ChangeWeapon(1);
         }
+
+        if (InputController.SelectWeapon3Button)
+        {
+            ChangeWeapon(2);
+        }
+
+        
+        
     }
 }

@@ -18,6 +18,8 @@ public class Weapon : Item
     public int Ammo { get; protected set; }
     public float ReloadDuration { get; protected set; }
 
+    public float FireRateTime { get; protected set; }
+
     [SerializeField]
     public virtual WeaponType Type { get; set; }
 
@@ -36,6 +38,7 @@ public class Weapon : Item
             return (
                 Ammo > 0
                 && ReloadDuration <= 0
+                && FireRateTime >= FireRate
             );
         } 
     }
@@ -76,6 +79,8 @@ public class Weapon : Item
 
     private void Update()
     {
+        FireRateTime += Time.deltaTime;
+
         if(ReloadDuration > 0)
         {
             ReloadDuration -= Time.deltaTime;
@@ -84,6 +89,8 @@ public class Weapon : Item
                 Ammo = AmmoMax;
             }
         }
+
+
     }
 
     public virtual void Fire()
@@ -91,6 +98,7 @@ public class Weapon : Item
         if(CanFire)
         {
             FireWeapon();
+            FireRateTime = 0f;
             Ammo--;
         }
     }
