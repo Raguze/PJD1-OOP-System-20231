@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum WeaponType { None, Pistol, Shotgun, Machinegun, Sniper, RocketLauncher }
-
+public enum FireMode { None, Semi, Auto }
 public class Weapon : Item
 {
     public int Damage { get; set; }
@@ -22,6 +22,9 @@ public class Weapon : Item
 
     [SerializeField]
     public virtual WeaponType Type { get; set; }
+
+    [SerializeField]
+    public FireMode Mode { get; protected set; }
 
     [SerializeField]
     protected WeaponDTO weaponDTO;
@@ -57,6 +60,7 @@ public class Weapon : Item
         ReloadSpeed = weaponDTO.ReloadSpeed;
         Weight = weaponDTO.Weight;
         Type = weaponDTO.Type;
+        Mode = weaponDTO.Mode;
 
         // Other params
         Ammo = AmmoMax;

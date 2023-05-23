@@ -7,6 +7,7 @@ using UnityEngine;
 public class WeaponDTO : ItemDTO
 {
     public WeaponType Type;
+    public FireMode Mode;
     public int Damage;
     public int AmmoMax;
     public float FireRate;

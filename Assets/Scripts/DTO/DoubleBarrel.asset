@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: DoubleBarrel
   Type: 2
+  Mode: 1
   Damage: 15
   AmmoMax: 4
   FireRate: 1

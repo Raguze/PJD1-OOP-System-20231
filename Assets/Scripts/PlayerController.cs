@@ -104,7 +104,25 @@ public class PlayerController : BaseController
 
         rb.velocity = Velocity;
 
-        if(InputController.FireHold)
+        bool fireButton = false;
+        switch (CurrentWeapon.Mode)
+        {
+            case FireMode.None:
+                Debug.LogError($"Weapon {CurrentWeapon.name} has mode None");
+                Debug.Break();
+                break;
+            case FireMode.Semi:
+                fireButton = InputController.FireButton;
+                break;
+            case FireMode.Auto:
+                fireButton = InputController.FireHold;
+                break;
+            default:
+                Debug.LogError($"Weapon {CurrentWeapon.name} default case");
+                Debug.Break();
+                break;
+        }
+        if(fireButton)
         {
             CurrentWeapon.Fire();
         }
