@@ -17,9 +17,9 @@ MonoBehaviour:
   Mode: 2
   Damage: 10
   AmmoMax: 100
-  FireRate: 0.2
+  FireRate: 0.15
   ReloadSpeed: 4
-  Accuracy: 1
-  Distance: 5
-  BulletSpeed: 8
+  Accuracy: 0.7
+  Distance: 6
+  BulletSpeed: 12
   Weight: 1

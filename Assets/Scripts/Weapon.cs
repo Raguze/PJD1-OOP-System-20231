@@ -6,6 +6,8 @@ public enum WeaponType { None, Pistol, Shotgun, Machinegun, Sniper, RocketLaunch
 public enum FireMode { None, Semi, Auto }
 public class Weapon : Item
 {
+    public const float MAX_ANGLE_ACCURACY = 10f;
+
     public int Damage { get; set; }
     public int AmmoMax { get; set; }
     public float FireRate { get; set; }
@@ -110,9 +112,18 @@ public class Weapon : Item
     protected virtual void FireWeapon()
     {
         BulletController bullet = Factory.CreateBullet();
-        bullet.SetTransform(BulletRespawn.position, tf.rotation.eulerAngles.z);
+        float z = ApplyAccuracy(tf.rotation.eulerAngles.z);
+        bullet.SetTransform(BulletRespawn.position, z);
         bullet.SetDTO(weaponDTO);
 
+    }
+
+    protected virtual float ApplyAccuracy(float angleZ)
+    {
+        float weaponAngleAccuracy = MAX_ANGLE_ACCURACY * (1f - Mathf.Clamp01(Accuracy));
+        angleZ += Random.Range(-weaponAngleAccuracy, weaponAngleAccuracy);
+        Debug.Log($"{weaponAngleAccuracy} {angleZ}");
+        return angleZ;
     }
 
     public virtual void Reload()

@@ -9,7 +9,8 @@ public class MachineGun : Weapon
     protected override void FireWeapon()
     {
         BulletController bullet = Factory.CreateBullet();
-        bullet.SetTransform(BulletRespawn.position, tf.rotation.eulerAngles.z);
+        float z = ApplyAccuracy(tf.rotation.eulerAngles.z);
+        bullet.SetTransform(BulletRespawn.position, z);
         bullet.SetDTO(weaponDTO);
     }
 }

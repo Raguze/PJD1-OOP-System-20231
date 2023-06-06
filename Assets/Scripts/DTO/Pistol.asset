@@ -19,7 +19,7 @@ MonoBehaviour:
   AmmoMax: 7
   FireRate: 1
   ReloadSpeed: 2
-  Accuracy: 1
+  Accuracy: 0
   Distance: 3
   BulletSpeed: 5
   Weight: 1
